@@ -2,11 +2,7 @@
   font-family: 'Times New Roman', Times, serif;
 }
 body {
-  background-image: url('./images/background');
-  background-position: absolute;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+  background-color: bisque;
 }
 header {
   margin: auto;
