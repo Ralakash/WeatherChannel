@@ -56,12 +56,6 @@ div.content {
   div.content {
     margin-left: 0;
   }
-  body {
-    background-image: url('./images/background');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
 }
 
 @media screen and (max-width: 400px) {

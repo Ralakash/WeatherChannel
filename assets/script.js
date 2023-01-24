@@ -3,9 +3,9 @@ var cityName;
 // Grabs the information from the form cityName and uses it to run the function weatherCard. Awaits that data then runs schoolCard using a subset of that information
 $('#saveBtn').on('click', function (event) {
   event.preventDefault();
-  // for (let i = 0; i < cardID.length; i++) {
-  //   $(cardID[i]).remove();
-  //   $(buttonID[i]).remove();
+  // for (let index = 0; index < cardID.length; index++) {
+  //   $(cardID[index]).remove();
+  //   $(buttonID[index]).remove();
   // }
   $('#containerEL').empty;
   cityName = $('#cityName').val();
@@ -31,34 +31,38 @@ const weatherCard = async (resultsInfo) => {
     weather1 = weatherData.list;
     return weather1;
   });
-  debugger;
   console.log(weather1[1].main.temp);
   console.log(weather1.length);
-  for (let i = 0; i < weather1.length; i + 8) {
-    cardID[i] = '#card' + i;
-    cardBodyID[i] = '#card-body' + i;
-    buttonID[i] = '#saveButton' + i;
+
+  for (let i = 0; i < weather1.length / 8; i++) {
+    console.log(i);
+    let index = i * 8;
+    cardID[index] = '#card' + index;
+    cardBodyID[index] = '#card-body' + index;
+    buttonID[index] = '#saveButton' + index;
 
     $('#containerEL').append(
-      '<div class="card col-8 row container-fluid d-flex flex-row mt-2" id="card' + i + '"></div>'
+      '<div class="card col-8 row container-fluid d-flex flex-row mt-2" id="card' + index + '"></div>'
     );
-    $(cardID[i]).append('<div class="card-body col-8 container-fluid" id="card-body' + i + '"></div>');
-    $(cardBodyID[i]).html(
+    $(cardID[index]).append('<div class="card-body col-8 container-fluid" id="card-body' + index + '"></div>');
+    $(cardBodyID[index]).html(
       'City: ' +
         cityName +
         '<br/> Date and Time: ' +
-        weather1[i].dt_txt +
+        weather1[index].dt_txt +
         '<br/> Temperature(F): ' +
-        weather1[i].main.temp +
+        weather1[index].main.temp +
         '° <br/> Wind Speed: ' +
-        weather1[i].wind.speed +
+        weather1[index].wind.speed +
         '<br/> Humidity: ' +
-        weather1[i].main.humidity
+        weather1[index].main.humidity
     );
 
     // creates a button element that is used to save data to local storage.
-    let button = $('<button type="button" class="btn btn-secondary col-2 my-2" id=saveButton' + i + '>Save</button>');
-    $(cardID[i]).append(button);
+    let button = $(
+      '<button type="button" class="btn btn-secondary col-2 my-2" id=saveButton' + index + '>Save</button>'
+    );
+    $(cardID[index]).append(button);
     let cityObject = {
       name: cityName,
     };
@@ -86,33 +90,27 @@ const writeToSave = () => {
   }, []);
   localStorage.setItem('colleges', JSON.stringify(savedCitys));
   $('#sideBar').empty();
-  for (let i = 0; i < savedCitys.length; i++) {
+  for (let index = 0; index < savedCitys.length; index++) {
     let savedBodyID = [];
     let savedID = [];
-    savedID[i] = '#saved' + i;
-    savedBodyID[i] = '#saved-body' + i;
-    $('#sideBar').append('<div class="card col-9 row mb-2"  id="saved' + i + '"></div>');
+    savedID[index] = '#saved' + index;
+    savedBodyID[index] = '#saved-body' + index;
+    $('#sideBar').append('<div class="card col-9 row mb-2"  id="saved' + index + '"></div>');
     let closeBtn = $(
-      '<button type="button" class="btn btn-outline-danger btn-sm col-2 align-self-end" id="close' + i + '">X</button>'
+      '<button type="button" class="btn btn-outline-danger btn-sm col-2 align-self-end" id="close' +
+        index +
+        '">X</button>'
     );
     $(closeBtn).click(function (event) {
       savedCitys = savedCitys.concat(JSON.parse(localStorage.getItem('colleges')));
-      savedCitys.splice(i, 1);
+      savedCitys.splice(index, 1);
       localStorage.setItem('colleges', JSON.stringify(savedCitys));
       writeToSave();
     });
-    $(savedID[i]).append(closeBtn);
-    $(savedID[i]).append('<div class="card-body col-10" id="saved-body' + i + '"></div>');
-    $(savedBodyID[i]).html(
-      '<a href="' +
-        savedCitys[i].url +
-        '" target="_blank">' +
-        savedCitys[i].name +
-        '</a><br/> ' +
-        savedCitys[i].temp +
-        '°'
-    );
-    console.log('this is safved citys' + savedCitys[i]);
+    $(savedID[index]).append(closeBtn);
+    $(savedID[index]).append('<div class="card-body col-10" id="saved-body' + index + '"></div>');
+    $(savedBodyID[index]).html(savedCitys[index].name);
+    console.log(savedCitys[index]);
   }
   savedCitys = [];
 };
